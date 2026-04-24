@@ -1,10 +1,12 @@
-function App() {
+import { Board } from "./features";
+import { Layout } from "./layouts";
 
+function App() {
   return (
-    <>
-      <div>Hello</div>
-    </>
-  )
+    <Layout>
+      <Board/>
+    </Layout>
+  );
 }
 
-export default App
+export default App;
