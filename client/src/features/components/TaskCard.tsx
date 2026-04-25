@@ -1,29 +1,38 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { PriorityChip } from ".";
-import { CardStatus } from "../../models";
 
 type TodoCardProps = {
-  title: string
-  description: string
-  status: number
-  priority: number
+  title: string;
+  description: string;
+  status: number;
+  priority: number;
+  createdAt: string;
 };
 
-export default function TaskCard({ title, description, status, priority }: TodoCardProps) {
-
-  const determineColor = () => {
-    if(CardStatus.Todo === status){
-      return "#7bc0e8";
-    } else if(CardStatus.InProgress === status){
-      return "#F48FB1";
-    } else if(CardStatus.Done === status){
-      return "#26D0CE";
-    }
-
-  }
+export default function TaskCard({
+  title,
+  description,
+  priority,
+  createdAt,
+}: TodoCardProps) {
   return (
-    <Card sx={{ bgcolor: determineColor(), borderRadius: 2 }}>
-      <CardContent>
+    <Card sx={{ bgcolor: "#ffff", borderRadius: 2, height: 180 }}>
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -35,10 +44,41 @@ export default function TaskCard({ title, description, status, priority }: TodoC
             {title}
           </Typography>
 
-          <PriorityChip type={priority}/>
+          <PriorityChip type={priority} />
         </Box>
 
-        <Typography variant="body2">{description}</Typography>
+        <Typography 
+          variant="body2"
+          sx={{
+            maxHeight: 60,
+            overflowY: "auto",
+            pr: 1,
+        }}
+        >{description}</Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mt: "auto"
+          }}
+        >
+          <Typography>Created: {createdAt}</Typography>
+
+          <Box>
+            <Tooltip title="Edit Task">
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete Task">
+              <IconButton>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );

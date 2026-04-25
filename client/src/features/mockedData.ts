@@ -5,7 +5,7 @@ export const todo = [
     status: 1,
     createdAt: "2026-01-01",
     updatedAt: "2026-02-02",
-    description: "Initialize folders, install dependencies, and prepare base layout.",
+    description: "Initialize folders, install dependencies, and prepare base layout. Initialize folders, install dependencies, and prepare base layout. Initialize folders, install dependencies, and prepare base layout. Initialize folders, install dependencies, and prepare base layout. Initialize folders, install dependencies, and prepare base layout. ",
     priority: 2
   },
   {
