@@ -22,7 +22,7 @@ export default function NavBar() {
         >
           <Typography variant="h6">TaskBoard</Typography>
 
-          <Button variant="contained">Add Note</Button>
+          <Button variant="contained" sx={{ bgcolor: "#7bc0e8", color: "#1c303b"}}>Add Task</Button>
         </Box>
       </Toolbar>
     </AppBar>
