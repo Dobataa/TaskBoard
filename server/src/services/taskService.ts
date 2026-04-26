@@ -1,4 +1,5 @@
 import { supabase } from "../db/supabaseClient.js";
+import { Task } from "../types/Task.js";
 
 export const getTasks = async () => {
   const { data, error } = await supabase.from("tasks").select("*");
@@ -24,12 +25,12 @@ export const getTaskById = async (id: number) => {
   return data;
 };
 
-export const createTask = async (
-  title: string,
-  description: string,
-  status: number,
-  priority: number,
-) => {
+export const createTask = async ({
+  title,
+  description,
+  status,
+  priority,
+}: Task) => {
   const { error } = await supabase.from("tasks").insert([
     {
       title,
@@ -47,10 +48,7 @@ export const createTask = async (
 
 export const updateTask = async (
   id: number,
-  title: string,
-  description: string,
-  status: number,
-  priority: number,
+  { title, description, status, priority }: Task,
 ) => {
   const { error } = await supabase
     .from("tasks")
