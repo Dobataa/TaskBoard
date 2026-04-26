@@ -15,7 +15,6 @@ export default function Board() {
         const response = await getTasks(controller.signal);
 
         setTasks(response.data);
-        console.log(response.data);
       } catch (error: any) {
         if(error.name !== "AbortError"){
           console.log(error);
