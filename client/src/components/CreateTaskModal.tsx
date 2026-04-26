@@ -11,6 +11,8 @@ import {
   Button,
 } from "@mui/material";
 import { useState, type ChangeEvent } from "react";
+import { createTask } from "../services/taskService";
+import { useTasks } from "../context/useTasks";
 
 const style = {
   position: "absolute",
@@ -48,6 +50,8 @@ export default function CreateTaskModal({
   open,
   handleClose,
 }: CreateTaskModalProps) {
+  const { fetchTasks } = useTasks();
+  
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState<number | string>("");
@@ -59,6 +63,24 @@ export default function CreateTaskModal({
     setStatus("");
     setPriority("");
   };
+
+  const handleCreateTask = async() => {
+    try {
+      const newTask = {
+        title,
+        description,
+        status: Number(status),
+        priority: Number(priority),
+      }
+
+      await createTask(newTask);
+      handleClose();
+      resetForm();
+      await fetchTasks();
+    } catch (error) {
+        console.log(error);
+    }
+  }
 
   return (
     <Modal
@@ -134,7 +156,7 @@ export default function CreateTaskModal({
             <Button
               variant="contained"
               sx={{ bgcolor: "#7bc0e8", color: "#1c303b" }}
-              onClick={() => console.log(title, description, status, priority)}
+              onClick={handleCreateTask}
             >
               Create Task
             </Button>

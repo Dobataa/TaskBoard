@@ -9,8 +9,11 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { PriorityChip } from ".";
+import { deleteTask } from "../../services/taskService"
+import { useTasks } from "../../context/useTasks";
 
 type TodoCardProps = {
+  id: number;
   title: string;
   description: string;
   status: number;
@@ -19,11 +22,30 @@ type TodoCardProps = {
 };
 
 export default function TaskCard({
+  id,
   title,
   description,
   priority,
   createdAt,
 }: TodoCardProps) {
+  const { fetchTasks } = useTasks();
+  
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-GB");
+  };
+
+  const handleDeleteTask = async() => {
+      try {
+        console.log("start deleting");
+        await deleteTask(id);
+        console.log("finish deleting");
+        await fetchTasks();
+        console.log("get tasks");
+      } catch (error) {
+          console.log(error);
+      }
+    }
+
   return (
     <Card sx={{ bgcolor: "#ffff", borderRadius: 2, height: 180 }}>
       <CardContent
@@ -47,24 +69,26 @@ export default function TaskCard({
           <PriorityChip type={priority} />
         </Box>
 
-        <Typography 
+        <Typography
           variant="body2"
           sx={{
             maxHeight: 60,
             overflowY: "auto",
             pr: 1,
-        }}
-        >{description}</Typography>
+          }}
+        >
+          {description}
+        </Typography>
 
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mt: "auto"
+            mt: "auto",
           }}
         >
-          <Typography>Created: {createdAt}</Typography>
+          <Typography>Created: {formatDate(createdAt)}</Typography>
 
           <Box>
             <Tooltip title="Edit Task">
@@ -73,7 +97,9 @@ export default function TaskCard({
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete Task">
-              <IconButton>
+              <IconButton
+                onClick={handleDeleteTask}
+              >
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
