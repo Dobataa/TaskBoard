@@ -6,7 +6,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, memo } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditTaskModal, PriorityChip } from ".";
@@ -22,7 +22,7 @@ type TodoCardProps = {
   createdAt: string;
 };
 
-export default function TaskCard({
+const TaskCard = memo(function TaskCard({
   id,
   title,
   description,
@@ -30,7 +30,7 @@ export default function TaskCard({
   priority,
   createdAt,
 }: TodoCardProps) {
-  const { fetchTasks } = useTasks();
+  const { removeTask, fetchTasks } = useTasks();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const formatDate = (dateString: string) => {
@@ -39,12 +39,11 @@ export default function TaskCard({
 
   const handleDeleteTask = async () => {
     try {
-      console.log("start deleting");
       await deleteTask(id);
-      console.log("finish deleting");
-      await fetchTasks();
-      console.log("get tasks");
+
+      removeTask(id);
     } catch (error) {
+      await fetchTasks();
       console.log(error);
     }
   };
@@ -121,4 +120,6 @@ export default function TaskCard({
       />
     </>
   );
-}
+});
+
+export default TaskCard;

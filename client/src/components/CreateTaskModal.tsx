@@ -50,7 +50,7 @@ export default function CreateTaskModal({
   open,
   handleClose,
 }: CreateTaskModalProps) {
-  const { fetchTasks } = useTasks();
+  const { fetchTasks, addTask } = useTasks();
   
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -66,19 +66,21 @@ export default function CreateTaskModal({
 
   const handleCreateTask = async() => {
     try {
-      const newTask = {
+      const payload = {
         title,
         description,
         status: Number(status),
         priority: Number(priority),
       }
 
-      await createTask(newTask);
+      const newTask = await createTask(payload);
       handleClose();
       resetForm();
-      await fetchTasks();
+
+      addTask(newTask.data);
     } catch (error) {
         console.log(error);
+        await fetchTasks();
     }
   }
 

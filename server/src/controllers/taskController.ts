@@ -54,9 +54,9 @@ export const createTask = async (req: Request<{}, {}, Task>, res: Response) => {
   }
 
   try {
-    await taskService.createTask(req.body);
+    const data = await taskService.createTask(req.body);
 
-    res.status(201).json({ success: true });
+    res.status(201).json({ success: true, data });
   } catch (error: any) {
     res.status(404).json({ success: false, error: error.message });
   }
@@ -75,9 +75,9 @@ export const updateTask = async (
   }
 
   try {
-    await taskService.updateTask(id, req.body);
+    const data = await taskService.updateTask(id, req.body);
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, data });
   } catch (error: any) {
     res.status(404).json({ success: false, error: error.message });
   }

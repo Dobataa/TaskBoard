@@ -12,21 +12,31 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const fetchTasks = useCallback(async () => {
     setIsLoading(true);
     try {
-        const res = await getTasks(controller.signal);
-        setTasks(res.data);
+      const res = await getTasks(controller.signal);
+      setTasks(res.data);
     } catch (error: any) {
-        console.log(error);
-    }finally{
+      console.log(error);
+    } finally {
       setIsLoading(false);
     }
   }, []);
+
+  const addTask = (task: Task) => {
+    setTasks((prev) => [...prev, task]);
+  };
+
+  const removeTask = (id: number) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
 
   return (
-    <TaskContext.Provider value={{ tasks, isLoading, fetchTasks }}>
+    <TaskContext.Provider
+      value={{ tasks, isLoading, fetchTasks, addTask, removeTask }}
+    >
       {children}
     </TaskContext.Provider>
   );

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { Grid, Box, Typography, Skeleton } from "@mui/material";
-import { TaskCard } from "./components";
+import { Grid} from "@mui/material";
+import { TaskColumn } from "./components";
 import { CardStatus } from "../models";
 import { useTasks } from "../context/useTasks";
 
@@ -16,114 +16,45 @@ export default function Board() {
     [tasks],
   );
 
+  const counts = useMemo(() => {
+    return tasks.reduce(
+      (acc, task) => {
+        if (task.status === CardStatus.Todo) acc.todo++;
+        if (task.status === CardStatus.InProgress) acc.inProgress++;
+        if (task.status === CardStatus.Done) acc.done++;
+        return acc;
+      },
+      { todo: 0, inProgress: 0, done: 0 },
+    );
+  }, [tasks]);
+
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
       <Grid size={4}>
-        <Box
-          sx={{
-            p: 2,
-            borderRadius: 2,
-            bgcolor: "#ECEFF1",
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
-          <Typography variant="h6">TO DO</Typography>
-
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton
-                  key={i}
-                  variant="rectangular"
-                  height={180}
-                  sx={{ borderRadius: 2 }}
-                />
-              ))
-            : groupedTasks.todo.map((el) => (
-                <TaskCard
-                  key={el.id}
-                  id={el.id}
-                  title={el.title}
-                  status={el.status}
-                  description={el.description}
-                  priority={el.priority}
-                  createdAt={el.created_at}
-                />
-              ))}
-        </Box>
+        <TaskColumn
+          header={"DONE"}
+          count={counts.todo}
+          isLoading={isLoading}
+          tasks={groupedTasks.todo}
+        />
       </Grid>
 
       <Grid size={4}>
-        <Box
-          sx={{
-            p: 2,
-            borderRadius: 2,
-            bgcolor: "#ECEFF1",
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
-          <Typography variant="h6">IN PROGRESS</Typography>
-
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton
-                  key={i}
-                  variant="rectangular"
-                  height={180}
-                  sx={{ borderRadius: 2 }}
-                />
-              ))
-            : groupedTasks.inProgress.map((el) => (
-                <TaskCard
-                  key={el.id}
-                  id={el.id}
-                  title={el.title}
-                  status={el.status}
-                  description={el.description}
-                  priority={el.priority}
-                  createdAt={el.created_at}
-                />
-              ))}
-        </Box>
+        <TaskColumn
+          header={"IN PROGRESS"}
+          count={counts.inProgress}
+          isLoading={isLoading}
+          tasks={groupedTasks.inProgress}
+        />
       </Grid>
 
       <Grid size={4}>
-        <Box
-          sx={{
-            p: 2,
-            borderRadius: 2,
-            bgcolor: "#ECEFF1",
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
-          <Typography variant="h6">DONE</Typography>
-
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton
-                  key={i}
-                  variant="rectangular"
-                  height={180}
-                  sx={{ borderRadius: 2 }}
-                />
-              ))
-            : groupedTasks.done.map((el) => (
-                <TaskCard
-                  key={el.id}
-                  id={el.id}
-                  title={el.title}
-                  status={el.status}
-                  description={el.description}
-                  priority={el.priority}
-                  createdAt={el.created_at}
-                />
-              ))}
-        </Box>
+        <TaskColumn
+          header={"DONE"}
+          count={counts.done}
+          isLoading={isLoading}
+          tasks={groupedTasks.done}
+        />
       </Grid>
     </Grid>
   );

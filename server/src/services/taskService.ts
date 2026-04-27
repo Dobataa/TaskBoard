@@ -44,26 +44,32 @@ export const createTask = async ({
   status,
   priority,
 }: Task) => {
-  const { error } = await supabase.from("tasks").insert([
-    {
-      title,
-      description,
-      status,
-      priority,
-      created_at: new Date().toISOString(),
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert([
+      {
+        title,
+        description,
+        status,
+        priority,
+        created_at: new Date().toISOString(),
+      },
+    ])
+    .select()
+    .single();
 
   if (error) {
     throw error;
   }
+
+  return data;
 };
 
 export const updateTask = async (
   id: number,
   { title, description, status, priority }: Task,
 ) => {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("tasks")
     .update({
       title,
@@ -71,11 +77,15 @@ export const updateTask = async (
       status,
       priority,
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
 
   if (error) {
     throw error;
   }
+  
+  return data;
 };
 
 export const deleteTask = async (id: number) => {

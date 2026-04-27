@@ -69,15 +69,14 @@ export default function EditTaskModal({
 
   const handleEditTask = async() => {
     try {
-      const newTask = {
+      const payload = {
         title,
         description,
         status: Number(status),
         priority: Number(priority),
       }
 
-      await editTask(taskId, newTask);
-
+      await editTask(taskId, payload);
       handleClose();
       await fetchTasks();
     } catch (error) {
