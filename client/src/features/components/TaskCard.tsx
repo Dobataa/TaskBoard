@@ -15,6 +15,7 @@ import { EditTaskModal, PriorityChip } from ".";
 import { deleteTask, editTask } from "../../services/taskService";
 import { useTasks } from "../../context/useTasks";
 import { CardStatus } from "../../models";
+import { useSnackbar } from "../../context/SnackbarContext";
 
 type TodoCardProps = {
   id: number;
@@ -40,6 +41,8 @@ const TaskCard = memo(function TaskCard({
   createdAt,
 }: TodoCardProps) {
   const { removeTask, fetchTasks } = useTasks();
+  const { showSnackbar } = useSnackbar();
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const formatDate = (dateString: string) => {
@@ -50,10 +53,11 @@ const TaskCard = memo(function TaskCard({
     try {
       await deleteTask(id);
 
+      showSnackbar("Task deleted successfully", "success");
       removeTask(id);
-    } catch (error) {
+    } catch (error: any) {
       await fetchTasks();
-      console.log(error);
+      showSnackbar(error.message, "error");
     }
   };
 
@@ -68,8 +72,10 @@ const TaskCard = memo(function TaskCard({
 
       await editTask(id, payload);
       await fetchTasks();
-    } catch (error) {
-      console.log(error);
+
+      showSnackbar("Task status changed successfully", "success");
+    } catch (error: any) {
+      showSnackbar(error.message, "error");
     }
   };
 

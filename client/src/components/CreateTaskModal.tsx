@@ -13,6 +13,7 @@ import {
 import { useState, type ChangeEvent } from "react";
 import { createTask } from "../services/taskService";
 import { useTasks } from "../context/useTasks";
+import { useSnackbar } from "../context/SnackbarContext";
 
 const style = {
   position: "absolute",
@@ -51,6 +52,7 @@ export default function CreateTaskModal({
   handleClose,
 }: CreateTaskModalProps) {
   const { fetchTasks, addTask } = useTasks();
+  const { showSnackbar } = useSnackbar();
   
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -77,9 +79,10 @@ export default function CreateTaskModal({
       handleClose();
       resetForm();
 
+      showSnackbar("Task created successfully", "success");
       addTask(newTask.data);
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        showSnackbar(error.message, "error");
         await fetchTasks();
     }
   }

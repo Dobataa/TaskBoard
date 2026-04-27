@@ -13,6 +13,7 @@ import {
 import { useState, type ChangeEvent } from "react";
 import { editTask } from "../../services/taskService";
 import { useTasks } from "../../context/useTasks";
+import { useSnackbar } from "../../context/SnackbarContext";
 
 const style = {
   position: "absolute",
@@ -61,6 +62,7 @@ export default function EditTaskModal({
   priorityProps
 }: EditTaskModalProps) {
   const { fetchTasks } = useTasks();
+  const { showSnackbar } = useSnackbar();
   
   const [title, setTitle] = useState(titleProps);
   const [description, setDescription] = useState(descriptionProps);
@@ -78,9 +80,10 @@ export default function EditTaskModal({
 
       await editTask(taskId, payload);
       handleClose();
+      showSnackbar("Task edited successfully", "success");
       await fetchTasks();
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        showSnackbar(error.message, "error");
     }
   }
 
