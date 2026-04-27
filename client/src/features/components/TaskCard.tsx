@@ -9,9 +9,12 @@ import {
 import { useState, memo } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { EditTaskModal, PriorityChip } from ".";
-import { deleteTask } from "../../services/taskService";
+import { deleteTask, editTask } from "../../services/taskService";
 import { useTasks } from "../../context/useTasks";
+import { CardStatus } from "../../models";
 
 type TodoCardProps = {
   id: number;
@@ -20,6 +23,12 @@ type TodoCardProps = {
   status: number;
   priority: number;
   createdAt: string;
+};
+
+const statusNames: Record<number, string> = {
+  1: "To Do",
+  2: "In Progess",
+  3: "Done",
 };
 
 const TaskCard = memo(function TaskCard({
@@ -48,6 +57,22 @@ const TaskCard = memo(function TaskCard({
     }
   };
 
+  const handleEditTask = async (newStatus: number) => {
+    try {
+      const payload = {
+        title,
+        description,
+        status: newStatus,
+        priority: Number(priority),
+      };
+
+      await editTask(id, payload);
+      await fetchTasks();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Card sx={{ bgcolor: "#ffff", borderRadius: 2, height: 180 }}>
@@ -69,7 +94,31 @@ const TaskCard = memo(function TaskCard({
               {title}
             </Typography>
 
-            <PriorityChip type={priority} />
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <PriorityChip type={priority} />
+
+              <Box>
+                {status !== CardStatus.Todo && (
+                  <Tooltip title={`Move to ${statusNames[status - 1]}`}>
+                    <IconButton
+                      onClick={() => handleEditTask(status - 1)}
+                    >
+                      <ArrowBackIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+
+                {status !== CardStatus.Done && (
+                  <Tooltip title={`Move to ${statusNames[status + 1]}`}>
+                    <IconButton
+                      onClick={() => handleEditTask(status + 1)}
+                    >
+                      <ArrowForwardIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
+            </Box>
           </Box>
 
           <Typography

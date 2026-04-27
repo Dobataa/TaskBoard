@@ -32,7 +32,7 @@ export default function Board() {
     <Grid container spacing={2} sx={{ p: 2 }}>
       <Grid size={4}>
         <TaskColumn
-          header={"DONE"}
+          header={"TO DO"}
           count={counts.todo}
           isLoading={isLoading}
           tasks={groupedTasks.todo}
