@@ -6,7 +6,6 @@ import { useTasks } from "../context/useTasks";
 
 export default function Board() {
   const { tasks, isLoading } = useTasks();
-  console.log(isLoading);
 
   const groupedTasks = useMemo(
     () => ({

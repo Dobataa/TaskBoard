@@ -6,10 +6,11 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
+import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { PriorityChip } from ".";
-import { deleteTask } from "../../services/taskService"
+import { EditTaskModal, PriorityChip } from ".";
+import { deleteTask } from "../../services/taskService";
 import { useTasks } from "../../context/useTasks";
 
 type TodoCardProps = {
@@ -25,87 +26,99 @@ export default function TaskCard({
   id,
   title,
   description,
+  status,
   priority,
   createdAt,
 }: TodoCardProps) {
   const { fetchTasks } = useTasks();
-  
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-GB");
   };
 
-  const handleDeleteTask = async() => {
-      try {
-        console.log("start deleting");
-        await deleteTask(id);
-        console.log("finish deleting");
-        await fetchTasks();
-        console.log("get tasks");
-      } catch (error) {
-          console.log(error);
-      }
+  const handleDeleteTask = async () => {
+    try {
+      console.log("start deleting");
+      await deleteTask(id);
+      console.log("finish deleting");
+      await fetchTasks();
+      console.log("get tasks");
+    } catch (error) {
+      console.log(error);
     }
+  };
 
   return (
-    <Card sx={{ bgcolor: "#ffff", borderRadius: 2, height: 180 }}>
-      <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-        }}
-      >
-        <Box
+    <>
+      <Card sx={{ bgcolor: "#ffff", borderRadius: 2, height: 180 }}>
+        <CardContent
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            flexDirection: "column",
+            height: "100%",
           }}
         >
-          <Typography gutterBottom sx={{ fontSize: "1.25rem" }}>
-            {title}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography gutterBottom sx={{ fontSize: "1.25rem" }}>
+              {title}
+            </Typography>
+
+            <PriorityChip type={priority} />
+          </Box>
+
+          <Typography
+            variant="body2"
+            sx={{
+              maxHeight: 60,
+              overflowY: "auto",
+              pr: 1,
+            }}
+          >
+            {description}
           </Typography>
 
-          <PriorityChip type={priority} />
-        </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: "auto",
+            }}
+          >
+            <Typography>Created: {formatDate(createdAt)}</Typography>
 
-        <Typography
-          variant="body2"
-          sx={{
-            maxHeight: 60,
-            overflowY: "auto",
-            pr: 1,
-          }}
-        >
-          {description}
-        </Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mt: "auto",
-          }}
-        >
-          <Typography>Created: {formatDate(createdAt)}</Typography>
-
-          <Box>
-            <Tooltip title="Edit Task">
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete Task">
-              <IconButton
-                onClick={handleDeleteTask}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
+            <Box>
+              <Tooltip title="Edit Task">
+                <IconButton onClick={() => setIsEditModalOpen(true)}>
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete Task">
+                <IconButton onClick={handleDeleteTask}>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      <EditTaskModal
+        open={isEditModalOpen}
+        handleClose={() => setIsEditModalOpen(false)}
+        taskId={id}
+        titleProps={title}
+        descriptionProps={description}
+        statusProps={status}
+        priorityProps={priority}
+      />
+    </>
   );
 }

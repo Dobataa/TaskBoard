@@ -42,3 +42,17 @@ export const deleteTask = async (id: number) => {
 
   return response.json();
 };
+
+export const editTask = async (taskId: number, editedTask: Task) => {
+  const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(editedTask),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to edit task");
+  }
+
+  return response.json();
+};
