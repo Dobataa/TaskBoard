@@ -25,6 +25,19 @@ export const getTaskById = async (id: number) => {
   return data;
 };
 
+export const getTaskByStatusId = async (statusId: number) => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("status", statusId);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
 export const createTask = async ({
   title,
   description,

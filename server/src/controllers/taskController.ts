@@ -34,6 +34,18 @@ export const getTaskById = async (
   }
 };
 
+export const getTasksByStatusId = async (req: Request, res: Response) => {
+  try {
+    const statusId = Number(req.params.statusId);
+
+    const data = await taskService.getTaskByStatusId(statusId);
+
+    res.status(200).json({ success: true, data });
+  } catch (error: any) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};
+
 export const createTask = async (req: Request<{}, {}, Task>, res: Response) => {
   const errors = taskValidator.validateTask(req.body);
 

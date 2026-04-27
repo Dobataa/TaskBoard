@@ -7,6 +7,8 @@ router.get("/", taskController.getTasks);
 
 router.get("/:id", taskController.getTaskById);
 
+router.get("/status/:statusId", taskController.getTasksByStatusId);
+
 router.post("/", taskController.createTask);
 
 router.put("/:id", taskController.updateTask);

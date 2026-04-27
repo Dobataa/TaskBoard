@@ -17,6 +17,18 @@ export const getTasks = async (signal: AbortSignal) => {
   return response.json();
 };
 
+export const getTasksByStatusId = async (signal: AbortSignal, statusId: number) => {
+  const response = await fetch(`http://localhost:5000/tasks/status/${statusId}`, {
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch tasks");
+  }
+
+  return response.json();
+};
+
 export const createTask = async (newTask: Task) => {
   const response = await fetch("http://localhost:5000/tasks", {
     method: "POST",
