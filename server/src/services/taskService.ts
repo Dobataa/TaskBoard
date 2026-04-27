@@ -84,14 +84,22 @@ export const updateTask = async (
   if (error) {
     throw error;
   }
-  
+
   return data;
 };
 
 export const deleteTask = async (id: number) => {
-  const { error } = await supabase.from("tasks").delete().eq("id", id);
+  const { data, error } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", id)
+    .select();
 
   if (error) {
     throw error;
+  }
+
+  if(!data || data.length === 0){
+    throw new Error("Task not found");
   }
 };
