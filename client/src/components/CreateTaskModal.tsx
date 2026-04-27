@@ -51,7 +51,7 @@ export default function CreateTaskModal({
   open,
   handleClose,
 }: CreateTaskModalProps) {
-  const { fetchTasks, addTask } = useTasks();
+  const { addTask } = useTasks();
   const { showSnackbar } = useSnackbar();
   
   const [title, setTitle] = useState("");
