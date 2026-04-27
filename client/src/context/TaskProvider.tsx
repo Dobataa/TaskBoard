@@ -2,9 +2,11 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import type { Task } from "../models";
 import { getTasks } from "../services/taskService";
 import { TaskContext } from "./TaskContext";
+import { useSnackbar } from "./SnackbarContext";
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const controller = new AbortController();
+   const { showSnackbar } = useSnackbar();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -15,7 +17,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       const res = await getTasks(controller.signal);
       setTasks(res.data);
     } catch (error: any) {
-      console.log(error);
+      showSnackbar(error.message, "error");
     } finally {
       setIsLoading(false);
     }

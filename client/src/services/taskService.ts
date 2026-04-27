@@ -10,11 +10,13 @@ export const getTasks = async (signal: AbortSignal) => {
     signal,
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch tasks");
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.errors.join(", ") || data.error || "Something went wrong");
   }
 
-  return response.json();
+  return data;
 };
 
 export const getTasksByStatusId = async (signal: AbortSignal, statusId: number) => {
@@ -22,11 +24,13 @@ export const getTasksByStatusId = async (signal: AbortSignal, statusId: number) 
     signal,
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch tasks");
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.errors.join(", ") || data.error || "Something went wrong");
   }
 
-  return response.json();
+  return data;
 };
 
 export const createTask = async (newTask: Task) => {
@@ -36,11 +40,13 @@ export const createTask = async (newTask: Task) => {
     body: JSON.stringify(newTask),
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to create task");
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.errors.join(", ") || data.error || "Something went wrong");
   }
 
-  return response.json();
+  return data;
 };
 
 export const deleteTask = async (id: number) => {
@@ -48,11 +54,13 @@ export const deleteTask = async (id: number) => {
     method: "DELETE",
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to create task");
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.errors.join(", ") || data.error || "Something went wrong");
   }
 
-  return response.json();
+  return data;
 };
 
 export const editTask = async (taskId: number, editedTask: Task) => {
@@ -62,9 +70,11 @@ export const editTask = async (taskId: number, editedTask: Task) => {
     body: JSON.stringify(editedTask),
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to edit task");
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(data.errors.join(", ") || data.error || "Something went wrong");
   }
 
-  return response.json();
+  return data;
 };

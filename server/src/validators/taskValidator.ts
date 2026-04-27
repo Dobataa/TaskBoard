@@ -17,11 +17,11 @@ export const validateTask = (body: any) => {
     errors.push("Priority must be a number");
   }
 
-  if (body.status < 0 || body.status > 3) {
+  if (body.status <= 0 || body.status > 3) {
     errors.push("Invalid status");
   }
 
-  if (body.priority < 0 || body.priority > 3) {
+  if (body.priority <= 0 || body.priority > 3) {
     errors.push("Invalid priority");
   }
 

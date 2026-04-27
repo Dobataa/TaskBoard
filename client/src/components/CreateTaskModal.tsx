@@ -83,7 +83,6 @@ export default function CreateTaskModal({
       addTask(newTask.data);
     } catch (error: any) {
         showSnackbar(error.message, "error");
-        await fetchTasks();
     }
   }
 

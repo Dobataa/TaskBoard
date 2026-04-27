@@ -10,11 +10,11 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <TaskProvider>
-        <SnackbarProvider>
+      <SnackbarProvider>
+        <TaskProvider>
           <App />
-        </SnackbarProvider>
-      </TaskProvider>
+        </TaskProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   </StrictMode>,
 );
