@@ -1,3 +1,5 @@
+const API_URL = "https://taskboard-udgr.onrender.com";
+
 type Task = {
   title: string;
   description: string;
@@ -6,7 +8,7 @@ type Task = {
 };
 
 export const getTasks = async (signal: AbortSignal) => {
-  const response = await fetch("http://localhost:5000/tasks", {
+  const response = await fetch(`${API_URL}/tasks`, {
     signal,
   });
 
@@ -20,7 +22,7 @@ export const getTasks = async (signal: AbortSignal) => {
 };
 
 export const getTasksByStatusId = async (signal: AbortSignal, statusId: number) => {
-  const response = await fetch(`http://localhost:5000/tasks/status/${statusId}`, {
+  const response = await fetch(`${API_URL}/tasks/status/${statusId}`, {
     signal,
   });
 
@@ -34,7 +36,7 @@ export const getTasksByStatusId = async (signal: AbortSignal, statusId: number) 
 };
 
 export const createTask = async (newTask: Task) => {
-  const response = await fetch("http://localhost:5000/tasks", {
+  const response = await fetch(`${API_URL}/tasks`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newTask),
@@ -50,7 +52,7 @@ export const createTask = async (newTask: Task) => {
 };
 
 export const deleteTask = async (id: number) => {
-  const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+  const response = await fetch(`${API_URL}/tasks/${id}`, {
     method: "DELETE",
   });
 
@@ -64,7 +66,7 @@ export const deleteTask = async (id: number) => {
 };
 
 export const editTask = async (taskId: number, editedTask: Task) => {
-  const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+  const response = await fetch(`${API_URL}/tasks/${taskId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(editedTask),
