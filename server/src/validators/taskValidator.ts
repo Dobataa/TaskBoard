@@ -41,3 +41,17 @@ export const validateTaskId = (id: number) => {
 
   return errors;
 };
+
+export const validateStatusId = (statusId: number) => {
+  const errors: string[] = [];
+
+  if (Number.isNaN(statusId)) {
+    errors.push("Status should be a number");
+  }
+
+  if (statusId <= 0 || statusId > 3) {
+    errors.push("Invalid status");
+  }
+
+  return errors;
+};

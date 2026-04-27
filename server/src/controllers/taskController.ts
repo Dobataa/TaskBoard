@@ -35,6 +35,12 @@ export const getTaskById = async (
 };
 
 export const getTasksByStatusId = async (req: Request, res: Response) => {
+  const errors = taskValidator.validateStatusId(Number(req.params.statusId));
+
+  if (errors.length > 0) {
+    return res.status(400).json({ success: false, errors });
+  }
+
   try {
     const statusId = Number(req.params.statusId);
 
