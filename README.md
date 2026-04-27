@@ -38,7 +38,7 @@ The backend acts as the source of truth, while the frontend handles UI state and
 
 You can test the application here:
 
-👉 https://task-board-psi-nine.vercel.app/
+https://task-board-psi-nine.vercel.app/
 
 ### Test Scenarios
 - Create a new task
