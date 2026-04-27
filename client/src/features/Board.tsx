@@ -30,7 +30,7 @@ export default function Board() {
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
-      <Grid size={4}>
+      <Grid size={{ xs: 12, md: 4}}>
         <TaskColumn
           header={"TO DO"}
           count={counts.todo}
@@ -39,7 +39,7 @@ export default function Board() {
         />
       </Grid>
 
-      <Grid size={4}>
+      <Grid size={{ xs: 12, md: 4}}>
         <TaskColumn
           header={"IN PROGRESS"}
           count={counts.inProgress}
@@ -48,7 +48,7 @@ export default function Board() {
         />
       </Grid>
 
-      <Grid size={4}>
+      <Grid size={{ xs: 12, md: 4}}>
         <TaskColumn
           header={"DONE"}
           count={counts.done}
