@@ -1,4 +1,11 @@
-export const validateTask = (body: any) => {
+type Task = {
+  title: string;
+  description: string;
+  status: number;
+  priority: number;
+};
+
+export const validateTask = (body: Task) => {
   const errors: string[] = [];
 
   if (!body.title || body.title.trim() === "") {

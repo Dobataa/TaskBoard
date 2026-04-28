@@ -1,4 +1,5 @@
 const API_URL = "https://taskboard-udgr.onrender.com";
+import { validateTask } from "../validators/taskValidator";
 
 type Task = {
   title: string;
@@ -36,6 +37,12 @@ export const getTasksByStatusId = async (signal: AbortSignal, statusId: number) 
 };
 
 export const createTask = async (newTask: Task) => {
+  const errors = validateTask(newTask);
+
+  if(errors.length > 0){
+    throw new Error(errors.join(", ") || "Something went wrong");
+  }
+
   const response = await fetch(`${API_URL}/tasks`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -66,6 +73,12 @@ export const deleteTask = async (id: number) => {
 };
 
 export const editTask = async (taskId: number, editedTask: Task) => {
+  const errors = validateTask(editedTask);
+
+  if(errors.length > 0){
+    throw new Error(errors.join(", ") || "Something went wrong");
+  }
+
   const response = await fetch(`${API_URL}/tasks/${taskId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
